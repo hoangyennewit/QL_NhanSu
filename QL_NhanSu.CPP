@@ -227,16 +227,13 @@ void MenuAdmin(){
 
 void MenuAdministrator()
 {
-    //textcolor(12);
     cout << "\t************ MENU ADMIN ************" << endl;
-    //textcolor(14);
     cout << "\t    1. Them Employee                " << endl;
     cout << "\t    2. Xoa Employee                 " << endl;
     cout << "\t    3. Tim Employee                 " << endl;
     cout << "\t    4. Cap nhat Employee            " << endl;
     cout << "\t    5. Hien thi thong tin Employee  " << endl;
     cout << "\t    6. Thoat                        " << endl;
-    //textcolor(12);
     cout << "\t************************************" << endl;
 }
 
@@ -244,9 +241,7 @@ void MenuAdmin(){
     while (true){
         system("cls");
         MenuAdministrator();
-                        //textcolor(3);
                         cout << " Moi ban chon chuc nang: ";
-                        //textcolor(15);
                         int k;
                         cin >> k;
         if (k == 1)
