@@ -1,4 +1,6 @@
-﻿#include <fstream>
+//CODE NAY LOI NHA MOI NGUOI :))))
+/*
+#include <fstream>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -397,3 +399,4 @@ int main() {
     }
     return 0;
 }
+*/
