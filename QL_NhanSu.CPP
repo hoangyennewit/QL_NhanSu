@@ -1,305 +1,486 @@
+/*
 #include <bits/stdc++.h>
 using namespace std;
 
-class CUserName {
+template <class DataType>
+class LinkedList;
+
+class userName {
 private:
-    string strHoten, strDiachi, strSDT, strEmail;
+    string Hoten, Diachi, SDT, Email;
 public:
-    CUserName() {}
+    userName() {}
+    userName(string name, string address, string phoneNumber, string emailAddress)
+        : Hoten(name), Diachi(address), SDT(phoneNumber), Email(emailAddress) {}
 
-    CUserName(const string &strName, const string &strAddress, const string &strPhoneNumber, const string &strEmailAddress)
-        : strHoten(strName), strDiachi(strAddress), strSDT(strPhoneNumber), strEmail(strEmailAddress) {}
+    string getHoten() const { return Hoten; }
+    string getDiaChi() const { return Diachi; }
+    string getSDT() const { return SDT; }
+    string getEmail() const { return Email; }
 
-    string GetHoten() const {
-        return strHoten;
-    }
+    void setHoten(string hoten) { Hoten = hoten; }
+    void setDiachi(string dc) { Diachi = dc; }
+    void setSDT(string sdt) { SDT = sdt; }
+    void setEmail(string email) { Email = email; }
 
-    string GetDiaChi() const {
-        return strDiachi;
-    }
-
-    string GetSDT() const {
-        return strSDT;
-    }
-
-    string GetEmail() const {
-        return strEmail;
-    }
-
-    void SetHoten(const string &strHoten) {
-        this->strHoten = strHoten;
-    }
-
-    void SetDiachi(const string &strDiachi) {
-        this->strDiachi = strDiachi;
-    }
-
-    void SetSDT(const string &strSDT) {
-        this->strSDT = strSDT;
-    }
-
-    void SetEmail(const string &strEmail) {
-        this->strEmail = strEmail;
-    }
-    
-    // friend ostream &operator<<(ostream &os, const userName &user) {
-    //     os << "Ho va ten: " << user.Hoten;
-    //     os << "\nDia chi: " << user.Diachi;
-    //     os << "\nSo dien thoai: " << user.SDT;
-    //     os << "\nDia chi mail: " << user.Email;
-    //     return os;
-    // }
-
-    friend ostream& operator<<(ostream &os, const CUserName &user) {
-        os << user.strHoten << "\n" << user.strDiachi << "\n" << user.strSDT << "\n" << user.strEmail << "\n";
+    friend ostream &operator<<(ostream &os, const userName &user) {
+        os << user.Hoten << "\n" << user.Diachi << "\n" << user.SDT << "\n" << user.Email << "\n";
         return os;
     }
 
-    bool operator==(const CUserName &another) const {
-        return GetHoten() == another.GetHoten() &&
-               GetDiaChi() == another.GetDiaChi() &&
-               GetSDT() == another.GetSDT() &&
-               GetEmail() == another.GetEmail();
+    bool operator==(const userName &another) const {
+        return getHoten() == another.getHoten() &&
+               getDiaChi() == another.getDiaChi() &&
+               getSDT() == another.getSDT() &&
+               getEmail() == another.getEmail();
     }
 
-    CUserName& operator=(const CUserName &another) {
-        this->SetHoten(another.GetHoten());
-        this->SetDiachi(another.GetDiaChi());
-        this->SetSDT(another.GetSDT());
-        this->SetEmail(another.GetEmail());
+    userName& operator=(const userName& another) {
+        if (this != &another) {
+            this->setHoten(another.getHoten());
+            this->setDiachi(another.getDiaChi());
+            this->setSDT(another.getSDT());
+            this->setEmail(another.getEmail());
+        }
         return *this;
     }
 
-    void ReadFromFile(ifstream &file) {
-        getline(file, strHoten);
-        getline(file, strDiachi);
-        getline(file, strSDT);
-        getline(file, strEmail);
+    void readFromFile(ifstream &file) {
+        getline(file, Hoten);
+        getline(file, Diachi);
+        getline(file, SDT);
+        getline(file, Email);
     }
 };
 
-class CNode {
+template<class DataType>
+class Node {
 private:
-    CUserName cData;
-    CNode *pNext;
+    DataType data;
+    Node <DataType> *next;
+    friend class LinkedList <DataType>;
 public:
-    CNode() : pNext(nullptr) {}
-    CNode(const CUserName &cValues) : cData(cValues), pNext(nullptr) {}
+    Node() : next(NULL) {}
+    Node(DataType values) : data(values), next(NULL) {}
 
-    friend class CAdministrator;
-    friend class CEmployeeList;
+    friend class Administrator;
+    friend class Employee;
 };
 
-class CAdministrator : public CUserName {
+template<class DataType>
+class LinkedList {
 private:
-    CNode *pEmployee;
+    Node <DataType> *root;
 public:
-    CAdministrator() : pEmployee(nullptr) {}
-    CAdministrator(const string &strName, const string &strAddress, const string &strPhoneNumber, const string &strEmailAddress)
-        : CUserName(strName, strAddress, strPhoneNumber, strEmailAddress), pEmployee(nullptr) {}
+    LinkedList() : root(nullptr) {}
 
-    void AddEmployee(const CAdministrator &admin) {
-        CNode *pNewNode = new CNode(admin);
-        pNewNode->pNext = pEmployee;
-        pEmployee = pNewNode;
-    }
-
-    void SearchEmployee(const string &strName) {
-        CNode *pCurrent = pEmployee;
-        while (pCurrent != nullptr) {
-            if (pCurrent->cData.GetHoten() == strName) {
-                cout << "Thong tin nhan vien:\n" << pCurrent->cData << endl;
+    void searchEmployee(userName * x, const string &name) {
+        Node <DataType> *current = root;
+        while (current != NULL) {
+            if (current->data.getHoten() == name) {
+                cout << "Thong tin nhan vien:\n" << current->data << endl;
                 return;
             }
-            pCurrent = pCurrent->pNext;
+            current = current->next;
         }
-        cout << "Khong tim thay nhan vien co ten: " << strName << endl;
+        cout << "Khong tim thay nhan vien co ten: " << name << endl;
+    }
+    ~LinkedList() {
+        while (root != nullptr) {
+            Node<DataType>* temp = root;
+            root = root->next;
+            delete temp;
+        }
+    }
+};
+
+class Administrator : public userName {
+private:
+    Node <Administrator> * Admin;
+public:
+    Administrator() : Admin(NULL) {}
+    Administrator(string name, string address, string phoneNumber, string emailAddress)
+        : userName(name, address, phoneNumber, emailAddress), Admin(NULL) {}
+};
+
+class Employee : public userName {
+private:
+    Node <Employee>*employee;
+public: 
+    Employee() : employee(NULL) {}
+    Employee(string name, string address, string phoneNumber, string emailAddress)
+        : userName(name, address, phoneNumber, emailAddress), employee(NULL) {}
+};
+
+string searchFileAndReturnContents(const string& fileName) {
+    ifstream file(fileName);
+    if (!file) {
+        cerr << "File not found: " << fileName << endl;
+        return "";
+    }
+    
+    stringstream buffer;
+    buffer << file.rdbuf();
+    file.close();
+    return buffer.str();
+}
+
+int main() {
+    string name;
+    cout << "Nhap vao ten can tim ";
+    getline(cin, name);
+    
+    string fileName = name + ".txt"; // Assumes the file extension is .txt
+    string contents = searchFileAndReturnContents(fileName);
+
+    if (!contents.empty()) {
+        cout << "Contents of the file " << fileName << ":\n" << contents << endl;
+    } else {
+        cout << "File " << fileName << " not found or empty." << endl;
+    }
+    
+    return 0;
+}
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+template <class DataType>
+class LinkedList;
+
+class userName {
+private:
+    string Hoten, Diachi, SDT, Email;
+public:
+    userName() {}
+    userName(string name, string address, string phoneNumber, string emailAddress)
+        : Hoten(name), Diachi(address), SDT(phoneNumber), Email(emailAddress) {}
+
+    string getHoten() const { return Hoten; }
+    string getDiaChi() const { return Diachi; }
+    string getSDT() const { return SDT; }
+    string getEmail() const { return Email; }
+
+    void setHoten(string hoten) { Hoten = hoten; }
+    void setDiachi(string dc) { Diachi = dc; }
+    void setSDT(string sdt) { SDT = sdt; }
+    void setEmail(string email) { Email = email; }
+
+    friend ostream &operator<<(ostream &os, const userName &user) {
+        os << user.Hoten << "\n" << user.Diachi << "\n" << user.SDT << "\n" << user.Email << "\n";
+        return os;
     }
 
-    CUserName* Search(const string &strHoten) {
-        for (CNode *pCurrent = pEmployee; pCurrent != nullptr; pCurrent = pCurrent->pNext) {
-            if (pCurrent->cData.GetHoten() == strHoten) {
-                return &pCurrent->cData;
-            }
-        }
-        return nullptr;
+    bool operator==(const userName &another) const {
+        return getHoten() == another.getHoten() &&
+               getDiaChi() == another.getDiaChi() &&
+               getSDT() == another.getSDT() &&
+               getEmail() == another.getEmail();
     }
 
-    void PopFront() {
-        if (!pEmployee) return;
-        CNode *pTemp = pEmployee;
-        pEmployee = pEmployee->pNext;
-        delete pTemp;
+    userName& operator=(const userName& another) {
+        if (this != &another) {
+            this->setHoten(another.getHoten());
+            this->setDiachi(another.getDiaChi());
+            this->setSDT(another.getSDT());
+            this->setEmail(another.getEmail());
+        }
+        return *this;
     }
 
-    void Remove(const string &strUsername) {
-        if (!pEmployee) {
-            cout << "Khong xoa duoc\n";
-            return;
-        }
-        CUserName *pReject = Search(strUsername);
-        if (!pReject) {
-            cout << "Khong xoa duoc\n";
-            return;
-        }
-        if (pEmployee->cData == *pReject) {
-            this->PopFront();
-            cout << "Da xoa\n";
-            return;
-        }
-        CNode *pCurrent = pEmployee;
-        while (pCurrent->pNext != nullptr) {
-            if (pCurrent->pNext->cData == *pReject) {
-                CNode *pTemp = pCurrent->pNext;
-                pCurrent->pNext = pTemp->pNext;
-                delete pTemp;
-                cout << "Da xoa\n";
+    void readFromFile(ifstream &file) {
+        getline(file, Hoten);
+        getline(file, Diachi);
+        getline(file, SDT);
+        getline(file, Email);
+    }
+};
+
+template<class DataType>
+class Node {
+private:
+    DataType data;
+    Node <DataType> *next;
+    friend class LinkedList <DataType>;
+public:
+    Node() : next(NULL) {}
+    Node(DataType values) : data(values), next(NULL) {}
+
+    friend class Administrator;
+    friend class Employee;
+};
+
+template<class DataType>
+class LinkedList {
+private:
+    Node <DataType> *root;
+public:
+    LinkedList() : root(nullptr) {}
+
+    void searchEmployee(userName * x, const string &name) {
+        Node <DataType> *current = root;
+        while (current != NULL) {
+            if (current->data.getHoten() == name) {
+                cout << "Thong tin nhan vien:\n" << current->data << endl;
                 return;
             }
-            pCurrent = pCurrent->pNext;
+            current = current->next;
         }
+        cout << "Khong tim thay nhan vien co ten: " << name << endl;
     }
-
-    void ReadFromFile(const string &strFilename) {
-        ifstream file(strFilename);
-        if (file.is_open()) {
-            string strName, strAddress, strPhoneNumber, strEmailAddress;
-            while (getline(file, strName) && getline(file, strAddress) && getline(file, strPhoneNumber) && getline(file, strEmailAddress)) {
-                CAdministrator admin(strName, strAddress, strPhoneNumber, strEmailAddress);
-                AddEmployee(admin);
-            }
-            file.close();
-        } else {
-            cout << "Khong mo duoc file!" << endl;
-        }
-    }
-
-    void SaveToFile(const string &strFilename) {
-        ofstream file(strFilename);
-        CNode *pTemp = pEmployee;
-        while (pTemp) {
-            file << pTemp->cData;
-            pTemp = pTemp->pNext;
-        }
-        file.close();
-    }
-
-    void UpdateFileAfterDeletion(const string &strFilename) {
-        SaveToFile(strFilename);
-    }
-
-    void Display() const {
-        CNode *pCurrent = pEmployee;
-        while (pCurrent != nullptr) {
-            cout << pCurrent->cData << endl;
-            pCurrent = pCurrent->pNext;
-        }
-    }
-
-    ~CAdministrator() {
-        while (pEmployee) {
-            CNode *pTemp = pEmployee;
-            pEmployee = pEmployee->pNext;
-            delete pTemp;
+    ~LinkedList() {
+        while (root != nullptr) {
+            Node<DataType>* temp = root;
+            root = root->next;
+            delete temp;
         }
     }
 };
 
-class CEmployeeList {
+class Administrator : public userName {
 private:
-    CNode *pEmployee;
+    Node <Administrator> * Admin;
 public:
-    CEmployeeList() : pEmployee(nullptr) {}
+    Administrator() : Admin(NULL) {}
+    Administrator(string name, string address, string phoneNumber, string emailAddress)
+        : userName(name, address, phoneNumber, emailAddress), Admin(NULL) {}
 };
 
-// Menu chá»©c nÄƒng cho Employee
-void MenuEmployee() {
-    CEmployeeList employeeList;
-    int iChoice;
-    while (true) {
-        system("cls");
-        cout << "\n******************Menu EMPLOYEES*******************\n";
-        cout << "           1. Xem thong tin tai khoan\n";
-        cout << "           2. Doi password\n";
-        cout << "           3. Thoat!\n";
-        cout << "  ***************************************************\n";
-        cout << "Chon chuc nang: ";
-        cin >> iChoice;
-        if (iChoice == 1) {
-        } else if (iChoice == 2) {
-        } else if (iChoice == 3) {
-            break;
+class Employee : public userName {
+private:
+    Node <Employee>*employee;
+public: 
+    Employee() : employee(NULL) {}
+    Employee(string name, string address, string phoneNumber, string emailAddress)
+        : userName(name, address, phoneNumber, emailAddress), employee(NULL) {}
+};
+
+string searchFileAndReturnContents(const string& fileName) {
+    ifstream file(fileName);
+    if (!file) {
+        cerr << "Khong Tim Thay Nhan Vien!" << fileName << endl;
+        return "";
+    }
+    
+    stringstream buffer;
+    buffer << file.rdbuf();
+    file.close();
+    return buffer.str();
+}
+
+void removeEmployeeFromEmployFile(const string& employeeName) {
+    ifstream file("Employees.txt");
+    if (!file) {
+        cerr << "Khong tim thay file Employees.txt" << endl;
+        return;
+    }
+
+    string employeeFile = employeeName + ".txt";
+    ofstream tempFile(employeeFile );
+
+    string line;
+    bool found = false;
+    while (getline(file, line)) {
+        if (line != employeeName) {
+            tempFile << line << endl;
         } else {
-            cout << "Lua chon khong hop le. Vui long thu lai.\n";
+            found = true;
         }
-        system("pause");
+    }
+
+    file.close();
+    tempFile.close();
+    remove("Employees.txt");
+    rename(employeeFile.c_str(), "Employees.txt");
+
+    if (found) {
+        string employeeFileName = employeeName + ".txt";
+        if (remove(employeeFileName.c_str()) == 0) {
+            cout << "File " << employeeFileName << " xoa thanh cong!" << endl;
+        } 
+        else {
+            cerr << "Xoa file that bai!" << employeeFileName << endl;
+        }
+    } 
+    else {
+        cout << "Khong tim thay nhan vien " << employeeName << " de xoa!" << endl;
     }
 }
 
-// Menu chá»©c nÄƒng cho Admin
-void MenuAdmin() {
-    CAdministrator admin;
-    admin.ReadFromFile("[username].txt");
+/*
+void MenuAdmin(){
+    //system("cls");
     while (true) {
-        system("cls");
-        cout << "*******************Menu********************\n";
-        cout << "         1. Them Employee\n";
-        cout << "         2. Tim kiem Employee\n";
-        cout << "         3. Xoa Employee\n";
-        cout << "         4. Cap nhat Employee\n";
-        cout << "         5. Hien thi thong tin Employee\n";
-        cout << "         6. Thoat!\n";
-        cout << "*******************************************\n";
-        int iChoice;
+        //system("cls");
+        cout << "\n********************Menu*******************\n";
+        cout << "         1.Them Employee\n";
+        cout << "         2.Tim kiem Employee\n";
+        cout << "         3.Xoa Employee\n";
+        cout << "         4.Cap nhat Employee\n";
+        cout << "         5.Hien thi thong tin Employee\n";
+        cout << "         6.Thoat!\n";
+        cout << " ******************************************\n";
         cout << "Chon chuc nang: ";
-        cin >> iChoice;
+        //system("cls");
+        int choice;
+        cin >> choice;
         cin.ignore();
-        if (iChoice == 5) {
-            admin.Display();
-        } else if (iChoice == 2) {
-            cout << "Nhap ten nhan vien can tim: ";
-            string strUsername;
-            getline(cin, strUsername);
-            admin.SearchEmployee(strUsername);
-        } else if (iChoice == 3) {
-            cout << "Nhap ten nhan vien can xoa: ";
-            string strUsername;
-            getline(cin, strUsername);
-            admin.Remove(strUsername);
-            admin.UpdateFileAfterDeletion("[username].txt");
-            cout << "Danh sach nhan vien sau khi cap nhat:\n";
-            admin.Display();
-        } else if (iChoice == 4) {
-            cout << "Chuc nang cap nhat chua duoc hoan thanh.\n";
-        } else if (iChoice == 6) {
-            break;
-        } else {
-            cout << "Lua chon khong hop le.\n";
+        if (choice == 5) {
+            //Admin.display();
+        } 
+        else if (choice == 2) {
+            string name;
+            cout << "Nhap vao ten can tim: ";
+            getline(cin, name);
+            
+            string fileName = name + ".txt"; // Assumes the file extension is .txt
+            string contents = searchFileAndReturnContents(fileName);
+
+            if (!contents.empty()) {
+                cout << "Contents of the file " << fileName << ":\n" << contents << endl;
+            } 
         }
+        else if (choice == 3) {
+            string name;
+            cout << "Nhap vao ten can xoa: ";
+            getline(cin, name);
+            string fileName = name + ".txt"; 
+            char choice;
+            cout << "Ban co muon xoa nhan vien nay khong? (y/n): ";
+            cin >> choice;
+            if (choice == 'y' || choice == 'Y') {
+                removeEmployeeFromEmployFile(name);
+            }
+            else {
+                cout << "File " << fileName << " khong tim thay hoac rong!" << endl;
+            }
+        }
+
+        else if (choice == 6) {
+            break;
+        }
+
+        else {
+            cout << "Lua chon khong hop le. Vui long thu lai.\n";
+        }
+        
         system("pause");
+    }
+}
+*/
+
+void MenuAdministrator()
+{
+    //textcolor(12);
+    cout << "\t************ MENU ADMIN ************" << endl;
+    //textcolor(14);
+    cout << "\t    1. Them Employee                " << endl;
+    cout << "\t    2. Xoa Employee                 " << endl;
+    cout << "\t    3. Tim Employee                 " << endl;
+    cout << "\t    4. Cap nhat Employee            " << endl;
+    cout << "\t    5. Hien thi thong tin Employee  " << endl;
+    cout << "\t    6. Thoat                        " << endl;
+    //textcolor(12);
+    cout << "\t************************************" << endl;
+}
+
+void MenuAdmin(){
+    while (true){
+        system("cls");
+        MenuAdministrator();
+                        //textcolor(3);
+                        cout << " Moi ban chon chuc nang: ";
+                        //textcolor(15);
+                        int k;
+                        cin >> k;
+        if (k == 1)
+        {
+
+        }
+        else if (k == 2){
+            string name;
+            cout << "Nhap vao ten can xoa: ";
+            getline(cin, name);
+            string fileName = name + ".txt"; 
+            char choice;
+            cout << "Ban co muon xoa nhan vien nay khong? (y/n): ";
+            cin >> choice;
+            if (choice == 'y' || choice == 'Y') {
+                removeEmployeeFromEmployFile(name);
+            }
+            else {
+                cout << "File " << fileName << " khong tim thay hoac rong!" << endl;
+            }
+        }
+        else if (k == 3){
+            string name;
+            cout << "Nhap vao ten can tim: ";
+            getline(cin, name);
+            
+            string fileName = name + ".txt"; // Assumes the file extension is .txt
+            string contents = searchFileAndReturnContents(fileName);
+
+            if (!contents.empty()) {
+                cout << "Contents of the file " << fileName << ":\n" << contents << endl;
+            } 
+        }
+        else if (k == 4){
+
+        }
+        else if (k == 5){
+
+        }
+                        
+        else if (k == 6)
+        {
+
+        }
+        else{
+            cout << " Lua chon khong hop le!" << endl;
+        }
     }
 }
 
 int main() {
-    int iChoice;
+    int chucvu;
     while (true) {
-        system("cls");
-        cout << "*******************Menu*********************\n";
-        cout << "         1. Admin\n";
-        cout << "         2. Employee\n";
-        cout << "         3. Thoat!\n";
-        cout << "********************************************\n";
-        cout << "Chon chuc nang: ";
-        cin >> iChoice;
-        if (iChoice == 1) {
+        cout << "----------------CHUC VU------------------\n";
+        cout << "       1.Administrator\n";
+        cout << "       2.Employee\n";
+        cout << "       Chuc vu cua ban la: ";
+        cin >> chucvu;
+        cin.ignore();
+        if (chucvu == 1) {
             MenuAdmin();
-        } else if (iChoice == 2) {
-            MenuEmployee();
-        } else if (iChoice == 3) {
-            break;
+        } else if (chucvu == 2) {
+            //MenuEmployee();
         } else {
-            cout << "Lua chon khong hop le. Vui long thu lai.\n";
-        }
+                cout << "Lua chon khong hop le. Vui long thu lai.\n";
+        }    
     }
+        
+    /*
+    string name;
+    cout << "Nhap vao ten can tim: ";
+    getline(cin, name);
+    
+    string fileName = name + ".txt"; // Assumes the file extension is .txt
+    string contents = searchFileAndReturnContents(fileName);
+
+    if (!contents.empty()) {
+        cout << "Contents of the file " << fileName << ":\n" << contents << endl;
+
+        // Ask if the user wants to delete the employee
+        char choice;
+        cout << "Do you want to delete this employee? (y/n): ";
+        cin >> choice;
+        if (choice == 'y' || choice == 'Y') {
+            removeEmployeeFromEmployFile(name);
+        }
+    } else {
+        cout << "File " << fileName << " not found or empty." << endl;
+    }
+    */
     return 0;
 }
+
