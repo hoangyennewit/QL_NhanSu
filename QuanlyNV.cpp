@@ -1,5 +1,3 @@
-//CODE NAY LOI NHA MOI NGUOI :))))
-/*
 #include <fstream>
 #include <string>
 #include <vector>
