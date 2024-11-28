@@ -152,10 +152,10 @@ void removeEmployeeFromEmployFile(const string& employeeName) {
     if (found) {
         string employeeFileName = employeeName + ".txt";
         if (remove(employeeFileName.c_str()) == 0) {
-            cout << "File " << employeeFileName << " xoa thanh cong!" << endl;
+            cout << "File " << employeeFileName << " xoa that bai!" << endl;
         } 
         else {
-            cerr << "Xoa file that bai!" << employeeFileName << endl;
+            cout << "Xoa file thanh cong!" << endl;
         }
     } 
     else {
@@ -163,7 +163,7 @@ void removeEmployeeFromEmployFile(const string& employeeName) {
     }
 }
 
-/*
+
 void MenuAdmin(){
     //system("cls");
     while (true) {
@@ -182,18 +182,18 @@ void MenuAdmin(){
         cin >> choice;
         cin.ignore();
         if (choice == 5) {
-            //Admin.display();
+            
         } 
         else if (choice == 2) {
             string name;
             cout << "Nhap vao ten can tim: ";
             getline(cin, name);
             
-            string fileName = name + ".txt"; // Assumes the file extension is .txt
+            string fileName = name + ".txt";
             string contents = searchFileAndReturnContents(fileName);
 
             if (!contents.empty()) {
-                cout << "Contents of the file " << fileName << ":\n" << contents << endl;
+                cout << "Thong Tin Nhan Vien" << fileName << ":\n" << contents << endl;
             } 
         }
         else if (choice == 3) {
@@ -223,7 +223,7 @@ void MenuAdmin(){
         system("pause");
     }
 }
-*/
+
 
 void MenuAdministrator()
 {
@@ -237,60 +237,61 @@ void MenuAdministrator()
     cout << "\t************************************" << endl;
 }
 
-void MenuAdmin(){
-    while (true){
-        system("cls");
-        MenuAdministrator();
-                        cout << " Moi ban chon chuc nang: ";
-                        int k;
-                        cin >> k;
-        if (k == 1)
-        {
+// void MenuAdmin(){
+//     while (true){
+//         //system("cls");
+//         MenuAdministrator();
+//                         cout << " Moi ban chon chuc nang: ";
+//                         int k;
+//                         cin >> k;
+//         if (k == 1)
+//         {
 
-        }
-        else if (k == 2){
-            string name;
-            cout << "Nhap vao ten can xoa: ";
-            getline(cin, name);
-            string fileName = name + ".txt"; 
-            char choice;
-            cout << "Ban co muon xoa nhan vien nay khong? (y/n): ";
-            cin >> choice;
-            if (choice == 'y' || choice == 'Y') {
-                removeEmployeeFromEmployFile(name);
-            }
-            else {
-                cout << "File " << fileName << " khong tim thay hoac rong!" << endl;
-            }
-        }
-        else if (k == 3){
-            string name;
-            cout << "Nhap vao ten can tim: ";
-            getline(cin, name);
+//         }
+//         else if (k == 2){
+//             string name;
+//             cout << "Nhap vao ten can xoa: ";
+//             getline(cin, name);
+//             string fileName = name + ".txt";
+//             cin.ignore(); 
+//             char choice;
+//             cout << "Ban co muon xoa nhan vien nay khong? (y/n): ";
+//             cin >> choice;
+//             if (choice == 'y' || choice == 'Y') {
+//                 removeEmployeeFromEmployFile(name);
+//             }
+//             else {
+//                 cout << "File " << fileName << " khong tim thay hoac rong!" << endl;
+//             }
+//         }
+//         else if (k == 3){
+//             string name;
+//             cout << "Nhap vao ten can tim: ";
+//             getline(cin, name);
             
-            string fileName = name + ".txt"; // Assumes the file extension is .txt
-            string contents = searchFileAndReturnContents(fileName);
+//             string fileName = name + ".txt"; // Assumes the file extension is .txt
+//             string contents = searchFileAndReturnContents(fileName);
 
-            if (!contents.empty()) {
-                cout << "Contents of the file " << fileName << ":\n" << contents << endl;
-            } 
-        }
-        else if (k == 4){
+//             if (!contents.empty()) {
+//                 cout << "Contents of the file " << fileName << ":\n" << contents << endl;
+//             } 
+//         }
+//         else if (k == 4){
 
-        }
-        else if (k == 5){
+//         }
+//         else if (k == 5){
 
-        }
+//         }
                         
-        else if (k == 6)
-        {
+//         else if (k == 6)
+//         {
 
-        }
-        else{
-            cout << " Lua chon khong hop le!" << endl;
-        }
-    }
-}
+//         }
+//         else{
+//             cout << " Lua chon khong hop le!" << endl;
+//         }
+//     }
+// }
 
 int main() {
     int chucvu;
@@ -334,4 +335,3 @@ int main() {
     */
     return 0;
 }
-
